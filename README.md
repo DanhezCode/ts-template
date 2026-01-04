@@ -17,28 +17,11 @@ You can use **any package manager you prefer**. All commands shown below work th
 
 Install dependencies using your preferred package manager:
 
-### pnpm
-
 ```bash
 pnpm install
-```
-
-### npm
-
-```bash
-npm install
-```
-
-### yarn
-
-```bash
-yarn install
-```
-
-### bun
-
-```bash
-bun install
+# or npm install
+# or yarn install
+# or bun install
 ```
 
 ---
@@ -93,6 +76,9 @@ You can run these commands with **pnpm**, **npm**, **yarn**, or **bun**.
 
 ```bash
 pnpm lint
+# or npm run lint
+# or yarn lint
+# or bun run lint
 ```
 
 Runs ESLint to detect code issues.
@@ -101,6 +87,9 @@ Runs ESLint to detect code issues.
 
 ```bash
 pnpm lint:fix
+# or npm run lint:fix
+# or yarn lint:fix
+# or bun run lint:fix
 ```
 
 Automatically fixes ESLint problems when possible.
@@ -109,6 +98,9 @@ Automatically fixes ESLint problems when possible.
 
 ```bash
 pnpm format
+# or npm run format
+# or yarn format
+# or bun run format
 ```
 
 Formats the entire codebase using Prettier.
@@ -117,6 +109,9 @@ Formats the entire codebase using Prettier.
 
 ```bash
 pnpm typecheck
+# or npm run typecheck
+# or yarn typecheck
+# or bun run typecheck
 ```
 
 Runs TypeScript’s type checker without emitting files.
@@ -125,6 +120,9 @@ Runs TypeScript’s type checker without emitting files.
 
 ```bash
 pnpm test
+# or npm run test
+# or yarn test
+# or bun run test
 ```
 
 Runs your Node.js test suite.
@@ -136,21 +134,11 @@ Runs your Node.js test suite.
 This project uses **strict versioning** (`save-exact=true`), so dependencies **do not update automatically**.  
 If you want to update them, you must do it **manually** with your package manager:
 
-- **pnpm**
-  ```bash
-  pnpm update --latest
-  ```
-- **npm**
-  ```bash
-  npm update
-  ```
-- **yarn**
-  ```bash
-  yarn upgrade --latest
-  ```
-- **bun**
-  ```bash
-  bun update
-  ```
+```bash
+pnpm update --latest
+# or npm update
+# or yarn upgrade --latest
+# or bun update
+```
 
 This prevents inconsistent installations across machines and ensures full reproducibility.
