@@ -145,30 +145,32 @@ This prevents inconsistent installations across machines and ensures full reprod
 
 ---
 
-# ⚛️ React / ⚡ Preact
+## ⚛️ React / ⚡ Preact
 
 If you plan to use **React** or **Preact**, make sure to **uncomment the corresponding sections** in:
 
 - `eslint.config.js`
 - `tsconfig.json` (only required for Preact)
 
-## React
+### React
 
 - Uncomment the **React** block in `eslint.config.js`.
 - No TypeScript changes needed.
 
-## Preact
+### Preact
 
 - Uncomment the **Preact** block in `eslint.config.js`.
 - In `tsconfig.json`, add or uncomment `"jsxImportSource": "preact"`
 
-## Recommendation
+### Recommendation
 
 If your project uses React or Preact in a standard way, it’s **easier and more reliable** to start from an official template:
 
 - **Vite + React**
 - **Vite + Preact**
 - Or any React framework template of your choice
+
+---
 
 ## ⭐ Support
 
