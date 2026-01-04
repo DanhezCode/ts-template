@@ -1,31 +1,59 @@
-// eslint.config.js
-import js from "@eslint/js"
-import ts from "typescript-eslint"
-// import react from "eslint-plugin-react";
-import globals from "globals"
-import importPlugin from "eslint-plugin-import"
+// Base ESLint configs
+import js from "@eslint/js";
+import ts from "typescript-eslint";
+
+// Plugins
+import globals from "globals";
+import importPlugin from "eslint-plugin-import";
 
 export default [
+  /**
+   * -------------------------------------------------------
+   * Files and folders to ignore during linting
+   * -------------------------------------------------------
+   */
   {
     ignores: [
       "eslint.config.js",
       "prettier.config.js",
       "commitlint.config.js",
+
+      // Dependency folders
       "node_modules",
+
+      // Lockfiles (pnpm, bun, npm, yarn)
       "pnpm-lock.yaml",
       "bun.lock",
+      "package-lock.json",
+      "yarn.lock",
+
+      // Build artifacts
       "dist",
       "coverage",
       "build",
     ],
   },
 
-  // Base JS rules
+  /**
+   * -------------------------------------------------------
+   * Base JavaScript recommended rules
+   * -------------------------------------------------------
+   */
   js.configs.recommended,
 
-  // TypeScript rules
+  /**
+   * -------------------------------------------------------
+   * TypeScript recommended rules
+   * - Includes type-aware rules via recommendedTypeChecked
+   * -------------------------------------------------------
+   */
   ...ts.configs.recommended,
   ...ts.configs.recommendedTypeChecked,
+
+  /**
+   * Enable type-aware linting for TS files
+   * (Required for rules that need type information)
+   */
   {
     files: ["**/*.ts", "**/*.tsx"],
     languageOptions: {
@@ -36,10 +64,23 @@ export default [
     },
   },
 
-  // 🔥 Aquí va el plugin import y sus reglas
+  /**
+   * -------------------------------------------------------
+   * Import plugin configuration
+   * - Enforces clean, consistent import ordering
+   * - Alphabetizes imports
+   * - Adds TypeScript resolver to avoid false positives
+   * -------------------------------------------------------
+   */
   {
     plugins: {
       import: importPlugin,
+    },
+    settings: {
+      // Ensures eslint-plugin-import resolves TS paths correctly
+      "import/resolver": {
+        typescript: {},
+      },
     },
     rules: {
       "import/order": [
@@ -53,25 +94,11 @@ export default [
     },
   },
 
-  // React
-  // {
-  //   files: ["**/*.tsx", "**/*.jsx"],
-  //   plugins: {
-  //     react,
-
-  //   },
-  //   rules: {
-  //     ...react.configs["recommended"].rules,
-  //     ...react.configs["jsx-runtime"].rules,
-  //   },
-  //   settings: {
-  //     react: {
-  //       version: "detect",
-  //     },
-  //   },
-  // },
-
-  // Globales del navegador y Node
+  /**
+   * -------------------------------------------------------
+   * Global variables for browser and Node environments
+   * -------------------------------------------------------
+   */
   {
     languageOptions: {
       globals: {
@@ -81,24 +108,98 @@ export default [
     },
   },
 
-  // Reglas personalizadas (tu estilo: explícito, limpio, sin magia)
+  /**
+   * -------------------------------------------------------
+   * Custom rules (your explicit, clean, no-magic style)
+   * -------------------------------------------------------
+   */
   {
     rules: {
+      // Disable base rule and use TS version instead
       "no-unused-vars": "off",
+
+      // Allow unused variables prefixed with "_"
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
 
-      "no-console": ["warn", { allow: ["warn", "error"] }],
+      // Allow console.warn and console.error only
+      // "no-console": ["warn", { allow: ["warn", "error"] }],
 
-      // "react/jsx-no-useless-fragment": "error",
-      // "react/self-closing-comp": "error",
-
+      // Enforce consistent type imports
       "@typescript-eslint/consistent-type-imports": [
         "error",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
       ],
     },
   },
-]
+
+  /**
+   * -------------------------------------------------------
+   * React support (commented out)
+   * - Enables React linting rules
+   * - Includes JSX runtime rules for React 17+
+   * - Auto-detects installed React version
+   * -------------------------------------------------------
+   */
+  // {
+  //   files: ["**/*.jsx", "**/*.tsx"],
+  //   plugins: {
+  //     react: await import("eslint-plugin-react").then(m => m.default),
+  //   },
+  //   rules: {
+  //     // Recommended React rules
+  //     ...(
+  //       await import("eslint-plugin-react").then(m => m.default.configs.recommended)
+  //     ).rules,
+  //
+  //     // Rules for the new JSX transform (no need to import React)
+  //     ...(
+  //       await import("eslint-plugin-react").then(m => m.default.configs["jsx-runtime"])
+  //     ).rules,
+  //   },
+  //   settings: {
+  //     react: {
+  //       version: "detect", // Automatically detects installed React version
+  //     },
+  //   },
+  // },
+
+  /**
+   * -------------------------------------------------------
+   * Preact support (commented out)
+   * - Enables Preact-specific JSX linting
+   * - Uses eslint-plugin-react compatibility mode
+   * - Works with @preact/preset-vite or Next.js + Preact
+   * -------------------------------------------------------
+   */
+  // {
+  //   files: ["**/*.jsx", "**/*.tsx"],
+  //   plugins: {
+  //     react: await import("eslint-plugin-react").then(m => m.default),
+  //   },
+  //   settings: {
+  //     react: {
+  //       pragma: "h",          // Preact's JSX pragma
+  //       version: "detect",
+  //     },
+  //     // Allows eslint-plugin-import to resolve Preact aliases
+  //     "import/resolver": {
+  //       alias: {
+  //         map: [
+  //           ["react", "preact/compat"],
+  //           ["react-dom", "preact/compat"],
+  //         ],
+  //         extensions: [".js", ".jsx", ".ts", ".tsx"],
+  //       },
+  //     },
+  //   },
+  //   rules: {
+  //     // React rules still apply because Preact uses the same JSX semantics
+  //     ...(
+  //       await import("eslint-plugin-react").then(m => m.default.configs.recommended)
+  //     ).rules,
+  //   },
+  // },
+];
