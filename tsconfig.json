@@ -1,30 +1,56 @@
 {
   "compilerOptions": {
-    // Environment setup & latest features
+    // Use the newest JavaScript APIs
     "lib": ["ESNext"],
+
+    // Designed for modern code; use a bundler for compilation and TS only for type checking
     "target": "ESNext",
+
+    // Keep imports/exports exactly as written, without transforming them
     "module": "Preserve",
+
+    // Force module detection when appropriate (recommended for ESNext)
     "moduleDetection": "force",
+
+    // Modern JSX transform for React (no need to import React)
     "jsx": "react-jsx",
+
+    // Allow .js files inside the project
     "allowJs": true,
 
-    // Bundler mode
+    // Module resolution optimized for modern bundlers
     "moduleResolution": "bundler",
+
+    // Allow importing .ts files with explicit extensions
     "allowImportingTsExtensions": true,
+
+    // Do not modify or remove imports; preserve exact module syntax
     "verbatimModuleSyntax": true,
+
+    // Do not emit .js files; type checking only
     "noEmit": true,
 
-    // Best practices
+    // Enable TypeScript strict mode
     "strict": true,
+
+    // Skip type checking of external libraries (faster)
     "skipLibCheck": true,
+
+    // Prevent silent fallthrough in switch statements
     "noFallthroughCasesInSwitch": true,
+
+    // Safer indexed access (T | undefined)
     "noUncheckedIndexedAccess": true,
+
+    // Require `override` when overriding class methods
     "noImplicitOverride": true,
 
-    // Some stricter flags (disabled by default)
+    // Strict flags disabled to avoid unnecessary noise
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
+
+  // Only analyze files inside src/
   "include": ["src"]
 }
