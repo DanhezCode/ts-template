@@ -13,7 +13,7 @@ You can use **any package manager you prefer**. All commands shown below work th
 
 ---
 
-## 🚀 Installation
+### 🚀 Installation
 
 Install dependencies using your preferred package manager:
 
@@ -26,7 +26,7 @@ pnpm install
 
 ---
 
-## 🔧 Initialize Husky
+### 🔧 Initialize Husky
 
 After installing dependencies, you must run the `prepare` script:
 
@@ -49,12 +49,12 @@ This ensures consistent, clean, and safe commits.
 
 ---
 
-## 📝 Conventional Commits
+### 📝 Conventional Commits
 
 This template enforces **Conventional Commits** automatically during `pre-commit`.  
 If your commit message does not follow the standard, the commit will be rejected.
 
-### Common commit types
+#### Common commit types
 
 | Type          | Purpose                                        |
 | ------------- | ---------------------------------------------- |
@@ -68,11 +68,13 @@ If your commit message does not follow the standard, the commit will be rejected
 
 ---
 
-## 📂 Available Scripts
+### 📂 Available Scripts
 
 You can run these commands with **pnpm**, **npm**, **yarn**, or **bun**.
 
-### 🔍 Lint
+#### 🔍 Lint
+
+Runs ESLint to detect code issues.
 
 ```bash
 pnpm lint
@@ -81,9 +83,9 @@ pnpm lint
 # or bun run lint
 ```
 
-Runs ESLint to detect code issues.
+#### 🛠 Fix Lint Issues
 
-### 🛠 Fix Lint Issues
+Automatically fixes ESLint problems when possible.
 
 ```bash
 pnpm lint:fix
@@ -92,9 +94,9 @@ pnpm lint:fix
 # or bun run lint:fix
 ```
 
-Automatically fixes ESLint problems when possible.
+#### 🎨 Format
 
-### 🎨 Format
+Formats the entire codebase using Prettier.
 
 ```bash
 pnpm format
@@ -103,9 +105,9 @@ pnpm format
 # or bun run format
 ```
 
-Formats the entire codebase using Prettier.
+#### 🧪 Type Check
 
-### 🧪 Type Check
+Runs TypeScript’s type checker without emitting files.
 
 ```bash
 pnpm typecheck
@@ -114,9 +116,9 @@ pnpm typecheck
 # or bun run typecheck
 ```
 
-Runs TypeScript’s type checker without emitting files.
+#### 🧪 Tests
 
-### 🧪 Tests
+Runs your Node.js test suite.
 
 ```bash
 pnpm test
@@ -125,11 +127,9 @@ pnpm test
 # or bun run test
 ```
 
-Runs your Node.js test suite.
-
 ---
 
-## 🔄 Updating Dependencies
+### 🔄 Updating Dependencies
 
 This project uses **strict versioning** (`save-exact=true`), so dependencies **do not update automatically**.  
 If you want to update them, you must do it **manually** with your package manager:
@@ -145,24 +145,24 @@ This prevents inconsistent installations across machines and ensures full reprod
 
 ---
 
-## ⚛️ React / ⚡ Preact
+### ⚛️ React / ⚡ Preact
 
 If you plan to use **React** or **Preact**, make sure to **uncomment the corresponding sections** in:
 
 - `eslint.config.js`
 - `tsconfig.json` (only required for Preact)
 
-### React
+#### React
 
 - Uncomment the **React** block in `eslint.config.js`.
 - No TypeScript changes needed.
 
-### Preact
+#### Preact
 
 - Uncomment the **Preact** block in `eslint.config.js`.
 - In `tsconfig.json`, add or uncomment `"jsxImportSource": "preact"`
 
-### Recommendation
+#### Recommendation
 
 If your project uses React or Preact in a standard way, it’s **easier and more reliable** to start from an official template:
 
