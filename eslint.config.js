@@ -5,6 +5,7 @@ import ts from "typescript-eslint";
 // Plugins
 import globals from "globals";
 import importPlugin from "eslint-plugin-import";
+// import reactPlugin from "eslint-plugin-react";
 
 export default [
   /**
@@ -79,7 +80,13 @@ export default [
     settings: {
       // Ensures eslint-plugin-import resolves TS paths correctly
       "import/resolver": {
-        typescript: {},
+        typescript: {
+          project: "./tsconfig.json",
+          alwaysTryTypes: true,
+        },
+        node: {
+          extensions: [".js", ".ts"],
+        },
       },
     },
     rules: {
@@ -146,18 +153,13 @@ export default [
   // {
   //   files: ["**/*.jsx", "**/*.tsx"],
   //   plugins: {
-  //     react: await import("eslint-plugin-react").then(m => m.default),
+  //     react: reactPlugin,
   //   },
   //   rules: {
   //     // Recommended React rules
-  //     ...(
-  //       await import("eslint-plugin-react").then(m => m.default.configs.recommended)
-  //     ).rules,
-  //
+  //     ...reactPlugin.configs.recommended.rules,
   //     // Rules for the new JSX transform (no need to import React)
-  //     ...(
-  //       await import("eslint-plugin-react").then(m => m.default.configs["jsx-runtime"])
-  //     ).rules,
+  //     ...reactPlugin.configs["jsx-runtime"].rules,
   //   },
   //   settings: {
   //     react: {
@@ -177,11 +179,11 @@ export default [
   // {
   //   files: ["**/*.jsx", "**/*.tsx"],
   //   plugins: {
-  //     react: await import("eslint-plugin-react").then(m => m.default),
+  //     react: reactPlugin,
   //   },
   //   settings: {
   //     react: {
-  //       pragma: "h",          // Preact's JSX pragma
+  //       pragma: "h", // Preact's JSX pragma
   //       version: "detect",
   //     },
   //     // Allows eslint-plugin-import to resolve Preact aliases
@@ -197,9 +199,7 @@ export default [
   //   },
   //   rules: {
   //     // React rules still apply because Preact uses the same JSX semantics
-  //     ...(
-  //       await import("eslint-plugin-react").then(m => m.default.configs.recommended)
-  //     ).rules,
+  //     ...reactPlugin.configs.recommended.rules,
   //   },
   // },
 ];
