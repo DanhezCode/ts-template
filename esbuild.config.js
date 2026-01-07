@@ -4,7 +4,7 @@ const commonOptions = {
   bundle: true,
   sourcemap: true,
   platform: "node",
-  target: "node18",
+  target: "node20",
   entryPoints: ["src/index.ts"],
   external: ["typescript"], // since it's peer dep
 };

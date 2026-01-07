@@ -10,6 +10,35 @@
     "README.md",
     "LICENSE"
   ],
+  "author": {
+    "name": "Daniel Hernández Ochoa",
+    "url": "https://github.com/DanhezCode"
+  },
+  "homepage": "https://github.com/danhezcode/declarative-benchmarks#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DanhezCode/declarative-benchmarks"
+  },
+  "bugs": {
+    "url": "https://github.com/danhezcode/declarative-benchmarks/issues"
+  },
+  "license": "MIT",
+  "description": "A flexible and declarative benchmarking library for Node.js that automatically discovers, runs, and compares performance tests using manifests, scenarios, adapters, and lifecycle hooks.",
+  "keywords": [
+    "benchmark",
+    "benchmarks",
+    "benchmarking",
+    "performance",
+    "performance-testing",
+    "performance-tools",
+    "benchmark-runner",
+    "benchmark-library",
+    "nodejs",
+    "javascript",
+    "cli",
+    "declarative-benchmark",
+    "stress-test"
+  ],
   "scripts": {
     "bench": "node dist/bin/index.js",
     "dev": "node --watch esbuild.config.js",
@@ -42,5 +71,8 @@
   },
   "dependencies": {
     "simple-statistics": "7.8.8"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
