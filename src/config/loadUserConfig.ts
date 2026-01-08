@@ -1,7 +1,8 @@
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { loadModule } from "../utils/loadModule.ts"; // tu loader universal
+import { ConfigurationError } from "../errors/BenchmarkError.ts";
+import { loadModule } from "../utils/loadModule.ts";
 
 const CONFIG_FILES = [
   "bench.config.ts",
@@ -14,19 +15,22 @@ const CONFIG_FILES = [
 export async function loadUserConfig(): Promise<Record<string, unknown>> {
   const cwd = process.cwd();
 
-  // console.log("[loadUserConfig] Buscando archivos de configuración en:", cwd);
-
   for (const file of CONFIG_FILES) {
     const abs = resolve(cwd, file);
     if (existsSync(abs)) {
-      const mod = await loadModule(abs);
-      // console.log("🚀 ~ loadUserConfig ~ mod:", mod);
+      try {
+        const mod = await loadModule(abs);
 
-      // soporta default export o named export
-      if (mod && typeof mod === "object" && "default" in mod) {
-        return (mod as Record<string, unknown>).default as Record<string, unknown>;
+        // soporta default export o named export
+        if (mod && typeof mod === "object" && "default" in mod) {
+          return (mod as Record<string, unknown>).default as Record<string, unknown>;
+        }
+        return mod as Record<string, unknown>;
+      } catch (err) {
+        throw new ConfigurationError(
+          err instanceof Error ? err.message : "Failed to load configuration file",
+        );
       }
-      return mod as Record<string, unknown>;
     }
   }
 

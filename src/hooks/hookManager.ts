@@ -1,4 +1,5 @@
 import configManager from "../config/configManager.ts";
+import { formatErrorMessage } from "../errors/BenchmarkError.ts";
 
 /**
  * Hook manager for executing custom code at specific points in the benchmark lifecycle.
@@ -20,7 +21,9 @@ class HookManager {
         try {
           await hook(context);
         } catch (error) {
-          console.error(`Error executing ${hookName} hook:`, error);
+          const message = formatErrorMessage(error);
+          console.warn(`⚠️ Hook "${hookName}" encountered an issue: ${message}`);
+          // Continue execution despite hook errors
         }
       }
     }

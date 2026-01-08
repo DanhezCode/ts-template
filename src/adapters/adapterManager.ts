@@ -1,4 +1,5 @@
 import configManager from "../config/configManager.ts";
+import { formatErrorMessage } from "../errors/BenchmarkError.ts";
 
 import { DefaultComparatorAdapter } from "./metrics/defaultComparator.ts";
 import { DefaultLoggerAdapter } from "./metrics/defaultLogger.ts";
@@ -21,11 +22,19 @@ class AdapterManager {
    * Loads custom adapters from config.
    */
   loadCustomAdapters() {
-    const customAdapters = configManager.resolve("adapters", {}, {}) as Record<string, unknown>;
-    for (const [key, AdapterClass] of Object.entries(customAdapters)) {
-      if (AdapterClass && typeof AdapterClass === "function") {
-        this.adapters[key] = new (AdapterClass as new () => unknown)();
+    try {
+      const customAdapters = configManager.resolve("adapters", {}, {}) as Record<string, unknown>;
+      for (const [key, AdapterClass] of Object.entries(customAdapters)) {
+        if (AdapterClass && typeof AdapterClass === "function") {
+          try {
+            this.adapters[key] = new (AdapterClass as new () => unknown)();
+          } catch (error) {
+            console.warn(`⚠️ Failed to initialize adapter "${key}": ${formatErrorMessage(error)}`);
+          }
+        }
       }
+    } catch (error) {
+      console.warn(`⚠️ Error loading custom adapters: ${formatErrorMessage(error)}`);
     }
   }
 

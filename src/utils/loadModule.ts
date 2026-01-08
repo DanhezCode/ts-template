@@ -3,24 +3,27 @@ import { readFileSync } from "node:fs";
 import { resolve, extname } from "node:path";
 
 import { buildSync, type BuildResult } from "esbuild";
+
+import {
+  ModuleLoadError,
+  TranspilationError,
+  UnsupportedFileError,
+} from "../errors/BenchmarkError.ts";
 /**
  * Imports an ESM module from a JS string using a data URL.
  */
 async function importFromString(jsCode: string): Promise<unknown> {
-  // console.log("[importFromString] Recibiendo JS code de longitud:", jsCode.length);
-
   const base64 = Buffer.from(jsCode).toString("base64");
   const url = `data:text/javascript;base64,${base64}`;
 
-  // console.log("[importFromString] Importando desde data URL…");
-
   try {
     const mod = (await import(url)) as unknown;
-    // console.log("[importFromString] Import exitoso");
     return mod;
   } catch (err) {
-    console.error("[importFromString] Error importando desde data URL:", err);
-    throw err;
+    throw new ModuleLoadError(
+      "[data URL]",
+      err instanceof Error ? err.message : "Failed to import transpiled code",
+    );
   }
 }
 
@@ -28,21 +31,16 @@ async function importFromString(jsCode: string): Promise<unknown> {
  * Extracts JS code from an esbuild result safely.
  */
 function getJsFromBuild(result: BuildResult): string {
-  // console.log("[getJsFromBuild] Analizando resultado de esbuild…");
-
   if (!result.outputFiles || result.outputFiles.length === 0) {
-    // console.error("[getJsFromBuild] ERROR: esbuild no devolvió outputFiles");
-    throw new Error("esbuild returned no output files");
+    throw new ModuleLoadError("[transpilation]", "No output generated during transpilation");
   }
 
   const file = result.outputFiles[0];
 
   if (!file || typeof file.text !== "string") {
-    // console.error("[getJsFromBuild] ERROR: outputFiles[0] inválido");
-    throw new Error("Invalid esbuild output");
+    throw new ModuleLoadError("[transpilation]", "Invalid transpilation output structure");
   }
 
-  // console.log("[getJsFromBuild] Código JS extraído correctamente. Longitud:", file.text.length);
   return file.text;
 }
 
@@ -50,8 +48,6 @@ function getJsFromBuild(result: BuildResult): string {
  * Transpiles unknown file (TS, CJS, etc.) to ESM using esbuild.
  */
 function transpileToEsm(absPath: string): Promise<unknown> {
-  // console.log(`[transpileToEsm] Transpilando archivo: ${absPath}`);
-
   let result: BuildResult;
   try {
     result = buildSync({
@@ -65,15 +61,10 @@ function transpileToEsm(absPath: string): Promise<unknown> {
       external: [...builtinModules, "esbuild"],
     });
   } catch (err) {
-    console.error("[transpileToEsm] ERROR ejecutando esbuild:", err);
-    throw err;
+    throw new TranspilationError(absPath, err instanceof Error ? err : new Error(String(err)));
   }
 
-  // console.log("[transpileToEsm] esbuild ejecutado correctamente");
-
   const jsCode = getJsFromBuild(result);
-  // console.log("[transpileToEsm] Importando código transpilado…");
-
   return importFromString(jsCode);
 }
 
@@ -117,17 +108,15 @@ const handlers: Record<string, Handler> = {
   },
 
   ".json": async absPath => {
-    // console.log(`[handler .json] Cargando JSON como módulo ESM: ${absPath}`);
-
     try {
       const raw = readFileSync(absPath, "utf8");
-      // console.log("[handler .json] JSON leído correctamente. Longitud:", raw.length);
-
       const jsCode = `export default ${raw}`;
       return importFromString(jsCode);
     } catch (err) {
-      console.error("ERROR leyendo:", err);
-      throw err;
+      throw new ModuleLoadError(
+        absPath,
+        err instanceof Error ? err.message : "Failed to read JSON file",
+      );
     }
   },
 };
@@ -139,33 +128,14 @@ const handlers: Record<string, Handler> = {
  * - Executes handler
  */
 export async function loadModule(filePath: string): Promise<unknown> {
-  // console.log("==============================================");
-  // console.log("[loadModule] Iniciando carga de módulo…");
-  // console.log("[loadModule] filePath recibido:", filePath);
-
   const absPath = resolve(filePath);
-  // console.log("[loadModule] Ruta absoluta:", absPath);
-
   const ext = extname(absPath);
-  // console.log("[loadModule] Extensión detectada:", ext);
 
   const handler = handlers[ext];
 
   if (!handler) {
-    // console.error(`[loadModule] ERROR: extensión no soportada: ${ext}`);
-    throw new Error(`Unsupported extension: ${ext} (${absPath})`);
+    throw new UnsupportedFileError(absPath);
   }
 
-  // console.log("[loadModule] Handler encontrado. Ejecutando…");
-
-  try {
-    const mod = await handler(absPath);
-    // console.log("[loadModule] Módulo cargado correctamente");
-    // console.log("==============================================");
-    return mod;
-  } catch (err) {
-    console.error("[loadModule] ERROR ejecutando handler:", err);
-    // console.log("==============================================");
-    throw err;
-  }
+  return handler(absPath);
 }

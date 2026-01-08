@@ -58,5 +58,5 @@
   },
 
   // Only analyze files inside src/
-  "include": ["src"]
+  "include": ["src", "bench.config.ts"]
 }

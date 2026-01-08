@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import configManager from "../config/configManager.ts";
+import { DiscoveryError, InvalidManifestError } from "../errors/BenchmarkError.ts";
 import type { Benchmark, DiscoveredBenchmark } from "../types";
 import { loadModule } from "../utils/loadModule.ts";
 
@@ -67,7 +68,7 @@ class DiscoveryManager {
         }
       }
     } catch (error) {
-      console.error(`Error scanning directory ${dir}:`, error);
+      throw new DiscoveryError(dir, error instanceof Error ? error.message : "Unknown error");
     }
   }
 
@@ -114,7 +115,7 @@ class DiscoveryManager {
         }
       }
     } catch (error) {
-      console.error(`Error scanning directory ${dir}:`, error);
+      throw new DiscoveryError(dir, error instanceof Error ? error.message : "Unknown error");
     }
     return null;
   }
@@ -129,21 +130,24 @@ class DiscoveryManager {
     try {
       const module = (await loadModule(manifestPath)) as { default?: Benchmark };
       const manifest = module.default || (module as Benchmark);
+
       // Validate manifest structure
       if (!manifest || typeof manifest !== "object") {
-        console.error(`Invalid manifest structure in ${manifestPath}`);
-        return null;
+        throw new InvalidManifestError("Configuration is not a valid object");
       }
       if (!manifest.name || !Array.isArray(manifest.cases) || !Array.isArray(manifest.scenarios)) {
-        console.error(
-          `Manifest in ${manifestPath} is missing required properties: name, cases, scenarios`,
+        throw new InvalidManifestError(
+          "Missing required properties: 'name', 'cases', or 'scenarios'. All three are required in the manifest.",
         );
-        return null;
       }
       return manifest;
     } catch (error) {
-      console.error(`Error loading manifest ${manifestPath}:`, error);
-      return null;
+      if (error instanceof InvalidManifestError) {
+        throw error;
+      }
+      throw new InvalidManifestError(
+        error instanceof Error ? error.message : "Failed to load manifest file",
+      );
     }
   }
 }

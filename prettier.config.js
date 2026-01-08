@@ -9,4 +9,4 @@ export default {
   arrowParens: "avoid",
   bracketSpacing: true,
   endOfLine: "lf",
-}
+};

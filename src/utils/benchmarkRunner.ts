@@ -1,3 +1,4 @@
+import { InvalidFunctionError } from "../errors/BenchmarkError.ts";
 import type { BenchmarkOptions, RunResult } from "../types.ts";
 
 import { calculateStatistics } from "./statisticsCalculator.ts";
@@ -10,7 +11,7 @@ export async function runBenchmark(
   options: BenchmarkOptions = {},
 ): Promise<RunResult> {
   if (typeof fn !== "function") {
-    throw new Error("fn must be a function");
+    throw new InvalidFunctionError("provided function");
   }
   const { params = {}, iterations = Infinity, timeLimit = Infinity, priorityCpu = false } = options;
 
