@@ -1,6 +1,6 @@
 {
   "name": "@danhezcode/declarative-benchmarks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "bin": {
     "bench": "dist/bin/index.js"
@@ -17,7 +17,7 @@
   "homepage": "https://github.com/DanhezCode/declarative-benchmarks#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DanhezCode/declarative-benchmarks.git"
+    "url": "git+https://github.com/DanhezCode/declarative-benchmarks.git"
   },
   "bugs": {
     "url": "https://github.com/DanhezCode/declarative-benchmarks/issues"
