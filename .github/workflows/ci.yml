@@ -2,11 +2,15 @@ name: CI
 
 on:
   pull_request:
+    branches: ["*"]
   push:
     branches: [main, develop]
+
   workflow_dispatch:
 
 permissions:
+  checks: write
+  statuses: write
   contents: read
   pull-requests: read
 
