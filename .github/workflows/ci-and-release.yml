@@ -2,6 +2,7 @@ name: CI & Release
 
 on:
   pull_request:
+  workflow_dispatch:
   push:
     branches: [main]
 
@@ -66,7 +67,6 @@ jobs:
     needs: validate
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    permissions: write-all
     concurrency: release
     steps:
       - name: Checkout repo
@@ -77,6 +77,7 @@ jobs:
         with:
           node-version: 24
           # cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -90,6 +91,6 @@ jobs:
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # GH_TOKEN: ${{ secrets.GH_TOKEN }}
           # NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm semantic-release

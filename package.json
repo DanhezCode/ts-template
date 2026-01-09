@@ -14,13 +14,13 @@
     "name": "Daniel Hernández Ochoa",
     "url": "https://github.com/DanhezCode"
   },
-  "homepage": "https://github.com/danhezcode/declarative-benchmarks#readme",
+  "homepage": "https://github.com/DanhezCode/declarative-benchmarks#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/DanhezCode/declarative-benchmarks.git"
   },
   "bugs": {
-    "url": "https://github.com/danhezcode/declarative-benchmarks/issues"
+    "url": "https://github.com/DanhezCode/declarative-benchmarks/issues"
   },
   "license": "MIT",
   "description": "A flexible and declarative benchmarking library for Node.js that automatically discovers, runs, and compares performance tests using manifests, scenarios, adapters, and lifecycle hooks.",
