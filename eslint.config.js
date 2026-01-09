@@ -15,6 +15,7 @@ export default [
    */
   {
     ignores: [
+      "release.config.js",
       "eslint.config.js",
       "prettier.config.js",
       "commitlint.config.js",
