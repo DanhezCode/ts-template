@@ -59,6 +59,7 @@ jobs:
     needs: validate
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions: write-all
     concurrency: release
     steps:
       - name: Checkout repo
@@ -81,6 +82,6 @@ jobs:
       # 🔑 Semantic Release
       - name: Semantic Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm semantic-release
