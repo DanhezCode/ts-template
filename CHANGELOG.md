@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+# [1.1.0](https://github.com/DanhezCode/declarative-benchmarks/compare/v1.0.1...v1.1.0) (2026-01-09)
+
+
+### Features
+
+* trigger minor release ([184396a](https://github.com/DanhezCode/declarative-benchmarks/commit/184396a206c2be3854d418ade968109f1e3f1d86))
+* trigger minor release ([8b1b983](https://github.com/DanhezCode/declarative-benchmarks/commit/8b1b983291f7de8c05dd6d67df007ff974de267a))
+
 ## [1.0.1](https://github.com/DanhezCode/declarative-benchmarks/compare/v1.0.0...v1.0.1) (2026-01-09)
 
 
